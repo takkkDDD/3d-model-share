@@ -72,7 +72,8 @@ if ($existing) {
     $manifest += [PSCustomObject]@{ file = $targetName; title = $Title; added = $today }
 }
 
-$manifest | ConvertTo-Json -Depth 3 | Set-Content -Path $manifestPath -Encoding utf8
+$json = $manifest | ConvertTo-Json -Depth 3
+[System.IO.File]::WriteAllText($manifestPath, $json, (New-Object System.Text.UTF8Encoding($false)))
 
 Push-Location $repoRoot
 try {
