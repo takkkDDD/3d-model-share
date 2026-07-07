@@ -53,7 +53,12 @@ Copy-Item -Path $srcFile.FullName -Destination $targetPath -Force
 
 $manifestPath = Join-Path $repoRoot "models\manifest.json"
 if (Test-Path $manifestPath) {
-    $manifest = @(Get-Content $manifestPath -Raw | ConvertFrom-Json)
+    $parsed = Get-Content $manifestPath -Raw | ConvertFrom-Json
+    if ($parsed -is [System.Array]) {
+        $manifest = $parsed
+    } else {
+        $manifest = @($parsed)
+    }
 } else {
     $manifest = @()
 }
