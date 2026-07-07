@@ -3,27 +3,27 @@ setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 echo ============================================
-echo   3D モデル公開ツール
+echo   3D Model Publish Tool
 echo ============================================
 echo.
 
 if "%~1"=="" (
-    set /p GLBPATH="公開する .glb ファイルのフルパスを入力してください: "
+    set /p GLBPATH="Enter full path to the .glb file: "
 ) else (
     set "GLBPATH=%~1"
-    echo 対象ファイル: %~1
+    echo Target file: %~1
 )
 
 if "!GLBPATH!"=="" (
-    echo ファイルが指定されていません。終了します。
+    echo No file specified. Exiting.
     pause
     exit /b 1
 )
 
-set /p TITLE="表示名を入力してください(空欄でファイル名を使用): "
+set /p TITLE="Enter display title (leave blank to use filename): "
 
 echo.
-echo 公開処理を実行しています...
+echo Publishing...
 echo.
 
 if "%TITLE%"=="" (
@@ -34,6 +34,6 @@ if "%TITLE%"=="" (
 
 echo.
 echo ============================================
-echo   処理が完了しました
+echo   Done
 echo ============================================
 pause

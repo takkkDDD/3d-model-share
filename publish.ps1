@@ -1,9 +1,9 @@
 <#
-使い方:
-  .\publish.ps1 -GlbPath "C:\path\to\model.glb" -Title "表示名"
-  .\publish.ps1 -GlbPath "C:\path\to\model.glb" -Title "表示名" -FileName "custom_name.glb"
+Usage:
+  .\publish.ps1 -GlbPath "C:\path\to\model.glb" -Title "Display Name"
+  .\publish.ps1 -GlbPath "C:\path\to\model.glb" -Title "Display Name" -FileName "custom_name.glb"
 
-models/ にコピー -> manifest.json 更新 -> git add/commit/push -> 共有URLを表示
+Copies into models/ -> updates manifest.json -> git add/commit/push -> prints share URL
 #>
 param(
     [Parameter(Mandatory=$true)]
@@ -18,18 +18,18 @@ $ErrorActionPreference = "Stop"
 $repoRoot = $PSScriptRoot
 
 if (-not (Test-Path $GlbPath)) {
-    Write-Error "ファイルが見つかりません: $GlbPath"
+    Write-Error "File not found: $GlbPath"
     exit 1
 }
 
 $srcFile = Get-Item $GlbPath
 $sizeMB = [math]::Round($srcFile.Length / 1MB, 1)
 if ($srcFile.Length -gt 100MB) {
-    Write-Error "100MBを超えています ($sizeMB MB)。gltf-transform で圧縮してください(仕様書 8章参照)。"
+    Write-Error "File exceeds 100MB ($sizeMB MB). Please compress it first (see spec section 8)."
     exit 1
 }
 if ($sizeMB -gt 50) {
-    Write-Warning "$sizeMB MB あります。50MBを超えているため圧縮を検討してください。"
+    Write-Warning "File is $sizeMB MB. Consider compressing files over 50MB."
 }
 
 if ($FileName) {
@@ -40,7 +40,7 @@ if ($FileName) {
 
 $normalized = $targetName.ToLower() -replace '\s+', '_'
 if ($normalized -ne $targetName) {
-    Write-Host "ファイル名を正規化しました: $targetName -> $normalized"
+    Write-Host "Normalized filename: $targetName -> $normalized"
 }
 $targetName = $normalized
 
@@ -84,7 +84,7 @@ if ($remoteUrl -match 'github\.com[:/](?<owner>[^/]+)/(?<repo>[^/]+)$') {
     $repo = $Matches.repo
     $pagesUrl = "https://$owner.github.io/$repo"
     Write-Host ""
-    Write-Host "公開URL:"
+    Write-Host "Share URL:"
     Write-Host "  $pagesUrl/?model=$targetName&title=$([uri]::EscapeDataString($Title))"
-    Write-Host "  一覧: $pagesUrl/gallery.html"
+    Write-Host "  Gallery: $pagesUrl/gallery.html"
 }
