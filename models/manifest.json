@@ -1,4 +1,12 @@
-[
-  { "file": "labelforum26study_vera.glb", "title": "verA", "added": "2026-07-07" },
-  { "file": "labelforum26study_verb.glb", "title": "verB", "added": "2026-07-07" }
+﻿[
+    {
+        "file":  "labelforum26study_vera.glb",
+        "title":  "AAAA",
+        "added":  "2026-07-07"
+    },
+    {
+        "file":  "labelforum26study_verb.glb",
+        "title":  "verB",
+        "added":  "2026-07-07"
+    }
 ]
