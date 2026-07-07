@@ -25,8 +25,12 @@
   <div id="grid"></div>
   <div id="empty" style="display:none;">モデルがまだありません。</div>
   <script>
-    fetch('models/manifest.json')
-      .then(r => r.json())
+    fetch('models/manifest.json', { cache: 'no-store' })
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+      })
+      .then(text => JSON.parse(text))
       .then(list => {
         const grid = document.getElementById('grid');
         if (!list.length) {
@@ -50,8 +54,9 @@
           grid.appendChild(a);
         });
       })
-      .catch(() => {
-        document.getElementById('empty').textContent = 'manifest.json を読み込めませんでした。';
+      .catch(err => {
+        console.error('gallery load error:', err);
+        document.getElementById('empty').textContent = 'manifest.json を読み込めませんでした: ' + err.message;
         document.getElementById('empty').style.display = 'block';
       });
   </script>
