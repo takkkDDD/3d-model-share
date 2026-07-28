@@ -72,7 +72,13 @@ if ($existing) {
     $manifest += [PSCustomObject]@{ file = $targetName; title = $Title; added = $today }
 }
 
-$json = $manifest | ConvertTo-Json -Depth 3
+if ($manifest.Count -eq 0) {
+    $json = "[]"
+} elseif ($manifest.Count -eq 1) {
+    $json = "[`n" + ($manifest | ConvertTo-Json -Depth 3) + "`n]"
+} else {
+    $json = $manifest | ConvertTo-Json -Depth 3
+}
 [System.IO.File]::WriteAllText($manifestPath, $json, (New-Object System.Text.UTF8Encoding($false)))
 
 Push-Location $repoRoot
