@@ -18,8 +18,13 @@ $ErrorActionPreference = "Stop"
 $repoRoot = $PSScriptRoot
 
 if (-not (Test-Path $GlbPath)) {
-    Write-Error "File not found: $GlbPath"
-    exit 1
+    if (Test-Path "$GlbPath.glb") {
+        Write-Host "Note: appended missing .glb extension"
+        $GlbPath = "$GlbPath.glb"
+    } else {
+        Write-Error "File not found: $GlbPath"
+        exit 1
+    }
 }
 
 $srcFile = Get-Item $GlbPath
